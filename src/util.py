@@ -91,17 +91,17 @@ def vertical_winner(board):
     """
     Determines which player has won a game with a vertical triple
     """
-    return (board[0][0] == board[0][3] == board[0][6] and board[0][6]) \
-        or (board[0][1] == board[0][4] == board[0][7] and board[0][7]) \
-        or (board[0][2] == board[0][5] == board[0][8] and board[0][8])
+    return (board[0] == board[3] == board[6] and board[6]) \
+        or (board[1] == board[4] == board[7] and board[7]) \
+        or (board[2] == board[5] == board[8] and board[8])
 
 
 def diagonal_winner(board):
     """
     Determines which player has won a game with a diagonal triple
     """
-    return (board[0][0] == board[0][4] == board[0][8] and board[0][8]) \
-        or (board[0][6] == board[0][4] == board[0][2] and board[0][2])
+    return (board[0] == board[4] == board[8] and board[8]) \
+        or (board[6] == board[4] == board[2] and board[2])
 
 
 def horizontal_winner(board):
@@ -123,9 +123,9 @@ def horizontal_winner(board):
     Without it, this function could only return 'True' or 'False', merely
     indicating that SOMEBODY won the game instead of stating who the winner is.
     """
-    return (board[0][0] == board[0][1] == board[0][2] and board[0][2]) \
-        or (board[0][3] == board[0][4] == board[0][5] and board[0][5]) \
-        or (board[0][6] == board[0][7] == board[0][8] and board[0][8])
+    return (board[0] == board[1] == board[2] and board[2]) \
+        or (board[3] == board[4] == board[5] and board[5]) \
+        or (board[6] == board[7] == board[8] and board[8])
 
 
 def winner(board):
@@ -138,7 +138,7 @@ def winner(board):
 def open_cells(board):
     """ Returns a tuple of the unmarked cells in a Tic-Tac-Toe board """
     openings = []
-    for p in board[0]:
+    for p in board:
         if type(p) is int:
             openings.append(p)
     return tuple(openings)
@@ -182,7 +182,7 @@ def make_board():
     A board is a 3-tuple of 3-tuples, where each tuple is one row
     it is not acutally, make it a 1D tuple
     """
-    return tuple([range(1, 10)])
+    return tuple([1, 2, 3, 4, 5, 6, 7, 8, 9])
     # return tuple([tuple([1, 2, 3]),
     #               tuple([4, 5, 6]),
     #               tuple([7, 8, 9])])

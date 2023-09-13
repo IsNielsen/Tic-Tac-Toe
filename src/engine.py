@@ -107,7 +107,7 @@ def cpu_turn(board, letter, strategy, verbose=True):
     if verbose:
         print(color("CPU {} is taking its turn...".format(letter)), end=' ', flush=True)
     sleep(CPU_DELAY)
-    choice = strategy(board)
+    choice = strategy(board)+1
     if verbose:
         print(color("playing on {}\n".format(choice)))
     return place(board, choice, letter)
