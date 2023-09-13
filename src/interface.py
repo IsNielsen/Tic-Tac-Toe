@@ -74,8 +74,8 @@ def show(board):
     if board:
         print(" {} | {} | {}\n---+---+---\n {} | {} | {}\n---+---+---\n {} | {} | {}\n".format(
             color(board[0][0]), color(board[0][1]), color(board[0][2]),
-            color(board[1][0]), color(board[1][1]), color(board[1][2]),
-            color(board[2][0]), color(board[2][1]), color(board[2][2])))
+            color(board[0][3]), color(board[0][4]), color(board[0][5]),
+            color(board[0][6]), color(board[0][7]), color(board[0][8])))
 
 
 
@@ -133,16 +133,28 @@ def place(board, position, player):
         return False
 
     # convert position into (row, col) coordinates
-    row, col = pos_to_rowcol(position)
+    ##row, col = pos_to_rowcol(position)
 
-    if board[row][col] != 'X' and board[row][col] != 'O':
+    if board[0][position-1] != 'X' and board[0][position-1] != 'O':
         # construct a brand new board
         new = []
-        for r in board:
-            new.append(list(r))
-        new[row][col] = player
+        for element in board[0]:
+            # this puts it into one dimension instead of 2
+            new.append(element)
+        # looks at position of 1D list
+        new[position-1] = player
         # Always maintain the board as a tuple to guarantee that it
         # can never be accidentally modified
-        return tuple([tuple(new[0]), tuple(new[1]), tuple(new[2])])
-    else:
-        return False
+        return tuple([new])
+
+    # if board[row][col] != 'X' and board[row][col] != 'O':
+    #     # construct a brand new board
+    #     new = []
+    #     for r in board:
+    #         new.append(list(r))
+    #     new[row][col] = player
+    #     # Always maintain the board as a tuple to guarantee that it
+    #     # can never be accidentally modified
+    #     return tuple([tuple(new[0]), tuple(new[1]), tuple(new[2])])
+    # else:
+    #     return False
