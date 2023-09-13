@@ -6,6 +6,8 @@
 ## holds the stratecy function which power the CPU opponent and its data
 """
 import random
+from util import *
+
 def strategy_dumb(b):
     """Picks the first open square
 
