@@ -10,6 +10,46 @@ from util import *
 from time import sleep
 
 
+def logo():
+    """Display the game's colorful logo"""
+    print()
+    print(red('888888888               '), white('888888888                '), cyan('888888888                 '))
+    print(red('"8888888" ooooo  ooooo  '), white('"8888888" ooo     ooooo  '), cyan('"8888888"  ooo    ooooo   '))
+    print(red('   888     888  88   8  '), white('   888    888    88   8  '), cyan('   888   88   88  8       '))
+    print(red('   888     888  88      '), white('   888   8ooo8   88      '), cyan('   888   88   88  8ooooo  '))
+    print(red('   888     888  88    88'), white('   888  888  888 88    88'), cyan('   888   88o  88 o88      '))
+    print(red('   888    88888  888888"'), white('   888  888  888  888888"'), cyan('   888   "888888 888888888'))
+    print("                                                            ", "by ", yellow("DuckieCorp"), "(tm)", sep='')
+    print(green("\nWOULD YOU LIKE TO PLAY A GAME?\n"))
+
+def show(board):
+    """
+    Display the Tic-Tac-Toe board on the screen, in color
+
+    When the optional parameter 'clear' is True, clear the screen before printing the board
+    """
+    if board:
+        print(" {} | {} | {}\n---+---+---\n {} | {} | {}\n---+---+---\n {} | {} | {}\n".format(
+            color(board[0]), color(board[1]), color(board[2]),
+            color(board[3]), color(board[4]), color(board[5]),
+            color(board[6]), color(board[7]), color(board[8])))
+
+def player_select():
+    while True:
+        print("0)", red("X"), green("CPU  "), "vs.", cyan("O"), green("CPU"))
+        print("1)", red("X"), white("Human"), "vs.", cyan("O"), green("CPU"))
+        print("2)", red("X"), green("CPU  "), "vs.", cyan("O"), white("Human"))
+        print("3)", red("X"), white("Human"), "vs.", cyan("O"), white("Human"))
+        p = input("Choose game mode [0-3] or Q to quit > ")
+        if p == "0" or p == "1" or p == "2" or p == "3":
+            return int(p)
+        elif p.lower() == "joshua":
+            return 4
+        elif p.lower().startswith('q'):
+            return p
+        else:
+            print("\nInvalid selection!\n")
+
 def get_human_move(board, letter):
     """
     Ask a human which move to take, or whether they want to quit.
@@ -36,46 +76,23 @@ def get_human_move(board, letter):
             else:
                 return choice
 
-def player_select():
+def human_turn(board, letter):
+    """
+    Return False if the game is over,
+           True to keep playing
+    """
     while True:
-        print("0)", red("X"), green("CPU  "), "vs.", cyan("O"), green("CPU"))
-        print("1)", red("X"), white("Human"), "vs.", cyan("O"), green("CPU"))
-        print("2)", red("X"), green("CPU  "), "vs.", cyan("O"), white("Human"))
-        print("3)", red("X"), white("Human"), "vs.", cyan("O"), white("Human"))
-        p = input("Choose game mode [0-3] or Q to quit > ")
-        if p == "0" or p == "1" or p == "2" or p == "3":
-            return int(p)
-        elif p.lower() == "joshua":
-            return 4
-        elif p.lower().startswith('q'):
-            return p
+        choice = get_human_move(board, letter)
+        if choice is False:
+            return False
+        new_board = place(board, choice, letter)
+        if not new_board:
+            if letter == 'X':
+                print(red("You can't play at {}!".format(choice)))
+            else:
+                print(cyan("You can't play at {}!".format(choice)))
         else:
-            print("\nInvalid selection!\n")
-
-def logo():
-    """Display the game's colorful logo"""
-    print()
-    print(red('888888888               '), white('888888888                '), cyan('888888888                 '))
-    print(red('"8888888" ooooo  ooooo  '), white('"8888888" ooo     ooooo  '), cyan('"8888888"  ooo    ooooo   '))
-    print(red('   888     888  88   8  '), white('   888    888    88   8  '), cyan('   888   88   88  8       '))
-    print(red('   888     888  88      '), white('   888   8ooo8   88      '), cyan('   888   88   88  8ooooo  '))
-    print(red('   888     888  88    88'), white('   888  888  888 88    88'), cyan('   888   88o  88 o88      '))
-    print(red('   888    88888  888888"'), white('   888  888  888  888888"'), cyan('   888   "888888 888888888'))
-    print("                                                            ", "by ", yellow("DuckieCorp"), "(tm)", sep='')
-    print(green("\nWOULD YOU LIKE TO PLAY A GAME?\n"))
-
-
-def show(board):
-    """
-    Display the Tic-Tac-Toe board on the screen, in color
-
-    When the optional parameter 'clear' is True, clear the screen before printing the board
-    """
-    if board:
-        print(" {} | {} | {}\n---+---+---\n {} | {} | {}\n---+---+---\n {} | {} | {}\n".format(
-            color(board[0]), color(board[1]), color(board[2]),
-            color(board[3]), color(board[4]), color(board[5]),
-            color(board[6]), color(board[7]), color(board[8])))
+            return new_board
 
 
 
@@ -102,24 +119,6 @@ def keep_playing(board):
     else:
         return board
 
-def human_turn(board, letter):
-    """
-    Return False if the game is over,
-           True to keep playing
-    """
-    while True:
-        choice = get_human_move(board, letter)
-        if choice is False:
-            return False
-        new_board = place(board, choice, letter)
-        if not new_board:
-            if letter == 'X':
-                print(red("You can't play at {}!".format(choice)))
-            else:
-                print(cyan("You can't play at {}!".format(choice)))
-        else:
-            return new_board
-
 def place(board, position, player):
     """
     Accepts: a game board (tuple), position (integer), and a player's identity ("X" or "O")
@@ -131,9 +130,6 @@ def place(board, position, player):
     if not 1 <= position <= 9:
         # player requested an out-of-bounds position
         return False
-
-    # convert position into (row, col) coordinates
-    ##row, col = pos_to_rowcol(position)
 
     if board[position-1] != 'X' and board[position-1] != 'O':
         # construct a brand new board
@@ -149,14 +145,3 @@ def place(board, position, player):
     else:
         return False
 
-    # if board[row][col] != 'X' and board[row][col] != 'O':
-    #     # construct a brand new board
-    #     new = []
-    #     for r in board:
-    #         new.append(list(r))
-    #     new[row][col] = player
-    #     # Always maintain the board as a tuple to guarantee that it
-    #     # can never be accidentally modified
-    #     return tuple([tuple(new[0]), tuple(new[1]), tuple(new[2])])
-    # else:
-    #     return False

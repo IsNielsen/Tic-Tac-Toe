@@ -22,7 +22,6 @@ def cpu_vs_cpu(strategy_x, strategy_o):
             break
     show(board)
 
-
 def cpu_vs_human(cpu_strategy):
     board = make_board()
     while True:
@@ -35,7 +34,6 @@ def cpu_vs_human(cpu_strategy):
             break
     show(board)
 
-
 def human_vs_human():
     board = make_board()
     while True:
@@ -46,7 +44,6 @@ def human_vs_human():
         if not keep_playing(board):
             break
     show(board)
-
 
 def human_vs_cpu(cpu_strategy):
     board = make_board()
@@ -59,7 +56,6 @@ def human_vs_cpu(cpu_strategy):
         if not keep_playing(board):
             break
     show(board)
-
 
 def game(strategy_x, strategy_o):
     global CPU_DELAY
